@@ -80,7 +80,7 @@ class Vector:
         return math.sqrt(self.dotProduct(self))
     def components(self):
         """
-        Returns list form of the vector
+        Returns the list form of the vector
         """
         return self.components
 
