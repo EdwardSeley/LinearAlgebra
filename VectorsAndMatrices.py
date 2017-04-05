@@ -207,7 +207,7 @@ class Matrix:
         """
         Loops through the rows within a loop of the columns (resets rows after it moves to the next column) and finds
         the corresponding members of the same column and puts them in a list. This list of same column members are then
-        made a row by creating a list of each list of same column entries. The list is then converted into a matrix. 
+        made a row by creating a list of each list of same column entries. The list is then converted into a matrix.
         """
         tempList = [None] * self.num_of_rows
         rowList = [None] * self.num_of_columns
