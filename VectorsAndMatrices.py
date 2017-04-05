@@ -232,6 +232,3 @@ class Matrix:
                 print(self.entries[x][y], end=' ')
             print('\n')
 
-
-m1 = Matrix([[3, 7, 1], [6, 9, 3], [6, 2, 4], [5, 2, 8]])
-m1.switchDimensions().print()
