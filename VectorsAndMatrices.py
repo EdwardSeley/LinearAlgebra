@@ -89,6 +89,19 @@ class Vector:
             tempList.append(Vector(matrix.entries[x]).dotProduct(self))
         return Vector(tempList)
 
+    def compare_vec(self, other):
+        """
+        Compares the two vectors by looping through each value and comparing them. If the two vectors' components
+        are all equal, it returns true. Otherwise false is returned.
+        """
+        if len(self) != len(other):
+            raise ValueError("Vectors must be equal")
+        for x in range (0, len(self)):
+            if self.components[x] != other.components[x]:
+                return False
+        return True
+
+
     def length(self):
         """
         Takes the square root of the dotProduct of the vector with itself.
@@ -232,3 +245,19 @@ class Matrix:
                 print(self.entries[x][y], end=' ')
             print('\n')
 
+    def zero_matrix(self):
+        """
+        returns a same dimension matrix filled with all zeros
+        """
+        return Matrix(self.num_of_rows * [self.num_of_columns * [0] ])
+
+    def compare_matrix(self, other):
+        """
+        retuns a boolean regarding whether or not the two matrices are equal
+        """
+        if self.num_of_rows != other.num_of_rows or self.num_of_columns != other.num_of_columns:
+            ValueError("Matrices must have the same dimensions")
+        for x in range(self.num_of_rows):
+            if(not Vector(self.entries[x]).compare_vec(Vector(other.entries[x]))):
+                return False
+        return True
