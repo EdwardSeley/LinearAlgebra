@@ -74,7 +74,7 @@ class Vector:
         dot_sum = 0
         for x in range(0, len(self)):
             dot_sum = dot_sum + self.components[x] * other.components[x]
-        return dot_sum
+        return round(dot_sum, 2)
 
     def matrix_mult(self, matrix):
         """

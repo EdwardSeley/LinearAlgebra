@@ -124,8 +124,13 @@ class Elimination:
             return True
         return False
 
-baseMatrix = Matrix([[3, -1], [1, 1]])
-solution = Vector([5, 3])
-eliminate = Elimination()
-result = eliminate.solveMatrix(baseMatrix, solution)
-print(eliminate.checkSolution(baseMatrix, solution, result))
+    def inverse_matrix(self, baseMatrix):
+        """
+        Finds the inverse by eliminating the matrix and solving for each column of the identity matrix.
+        Returns inverse matrix
+        """
+        tempList = [0] * baseMatrix.num_of_columns
+        for x in range (0, baseMatrix.num_of_columns):
+            tempList[x] = self.solveMatrix(baseMatrix, self.identityMatrix(baseMatrix.num_of_columns)
+                                           .columnVecs[x]).components
+        return Matrix(tempList).switchDimensions()
