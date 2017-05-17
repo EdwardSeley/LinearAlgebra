@@ -26,7 +26,7 @@ class Vector:
         """
         return self.dimension
 
-    def print(self):
+    def printVec(self):
         """
         Prints the components of the vector. Returns nothing.
         """
@@ -74,7 +74,7 @@ class Vector:
         dot_sum = 0
         for x in range(0, len(self)):
             dot_sum = dot_sum + self.components[x] * other.components[x]
-        return round(dot_sum, 2)
+        return round(dot_sum, 3)
 
     def matrix_mult(self, matrix):
         """
@@ -95,7 +95,7 @@ class Vector:
         are all equal, it returns true. Otherwise false is returned.
         """
         if len(self) != len(other):
-            raise ValueError("Vectors must be equal")
+            raise ValueError("Vectors must be equal lengths")
         for x in range (0, len(self)):
             if self.components[x] != other.components[x]:
                 return False
@@ -124,11 +124,11 @@ class Matrix:
         dimensions into the object.
         """
         if type(data) != list:
-            raise ValueError("Parameter must be a list of a integer or decimal rows")
+            raise ValueError("Parameter must be a list")
         for x in range(0, len(data)):
             if type(data[x]) != list:
                 print(str(len(data)))
-                raise ValueError("Parameter must be a list of a integer or decimal rows. "
+                raise ValueError("Parameter must be a list of integer or decimal rows. "
                                  "the item number " + str(x) + " in the list is not a list. It is of type: "
                                  + str(type(data[x])))
             if len(data[x]) != len(data[0]):
@@ -145,7 +145,6 @@ class Matrix:
 
         for a in range(0, len(data[0])): #iterates through number of rows
             for b in range(0, len(data)): #iterates through number of columns
-                #print("a: " + str(a) + " out of " + str(len(data[0]) - 1) + " b: " + str(b) + " out of " + str(len(data) - 1))
                 columnList[b] = data[b][a]
             vec = Vector(columnList)
             vecList[a] = vec
@@ -233,7 +232,7 @@ class Matrix:
 
         return Matrix(rowList)
 
-    def print(self):
+    def printMatrix(self):
         """
         After printing an empty line, it iterates through each entry and prints it. Once a row is complete,
         another empty line is made.
@@ -261,3 +260,30 @@ class Matrix:
             if(not Vector(self.entries[x]).compare_vec(Vector(other.entries[x]))):
                 return False
         return True
+
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        
+        
+            
+            
+            
+            
+            
+            
