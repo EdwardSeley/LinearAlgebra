@@ -1,6 +1,7 @@
 from VectorsAndMatrices import *
 from decimal import *
 from fractions import Fraction
+from tkinter.tix import COLUMN
 
 class Elimination:
     
@@ -32,9 +33,42 @@ class Elimination:
                 elimMatrix = Matrix(eliminationRows)
                 baseMatrix = elimMatrix.matrix_mult(baseMatrix)
                 eliminationMatrices.append(elimMatrix)
-
                 
         return eliminationMatrices
+    
+    def reduced_row_echelon_form(self, baseMatrix):
+        columnNum = 0
+        for rowNum in range(baseMatrix.num_of_rows):
+            for multiplierIndex in range(rowNum - 1, -1, -1):
+                columnNum = rowNum
+                pivot = baseMatrix.entries[rowNum][columnNum]
+                
+                while (pivot == 0 and columnNum < baseMatrix.num_of_columns - 1):
+                    columnNum += 1
+                    pivot = baseMatrix.entries[rowNum][columnNum]
+                if pivot == 0:
+                    break 
+                    
+                multiplier = baseMatrix.entries[multiplierIndex][columnNum]
+                eliminationRows = []
+                for eliminationRowIndex in range(0, baseMatrix.num_of_rows):
+                    if (eliminationRowIndex == multiplierIndex):
+                        multiplierRow = (self.identityMatrix(baseMatrix.num_of_rows).entries[eliminationRowIndex])
+                        multiplierRow[rowNum] = round(-multiplier/pivot, 5)
+                        eliminationRows.append(multiplierRow)
+                    else:
+                        eliminationRows.append(self.identityMatrix(baseMatrix.num_of_rows).entries[eliminationRowIndex])
+                elimMatrix = Matrix(eliminationRows)
+                baseMatrix = elimMatrix.matrix_mult(baseMatrix)
+                
+                if pivot != 1:
+                    elimMatrix = self.identityMatrix(baseMatrix.num_of_rows)
+                    elimMatrix.entries[rowNum][rowNum] = 1/pivot
+                    elimMatrix.printMatrix()
+                    baseMatrix = elimMatrix.matrix_mult(baseMatrix)
+                
+        return baseMatrix
+        
     
     def factor_matrix(self, baseMatrix):
         """
@@ -131,10 +165,11 @@ class Elimination:
                                            self.identityMatrix(baseMatrix.num_of_columns).columnVecs[x]).components
         return Matrix(tempList).switchDimensions()
 
-baseMatrix = Matrix([[1, 1, 2, 3], [2, 2, 8, 10], [3, 3, 10, 13]])
+baseMatrix = Matrix([[1, 1, 2, 4], [1, 2, 2, 5], [1, 3, 2, 6]])
 b_value = Vector([5, 9, 4, 2])
 eliminate = Elimination()
-eliminate.e_matrix(baseMatrix).matrix_mult(baseMatrix).printMatrix()
+u_matrix = eliminate.e_matrix(baseMatrix).matrix_mult(baseMatrix)
+eliminate.reduced_row_echelon_form(u_matrix).printMatrix()
 
 
 
