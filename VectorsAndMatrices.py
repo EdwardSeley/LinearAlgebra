@@ -74,7 +74,7 @@ class Vector:
         dot_sum = 0
         for x in range(0, len(self)):
             dot_sum = dot_sum + self.components[x] * other.components[x]
-        return round(dot_sum, 3)
+        return round(dot_sum, 4)
 
     def matrix_mult(self, matrix):
         """
@@ -154,6 +154,16 @@ class Matrix:
         self.entries = data
         self.num_of_columns = len(data[0])
         self.num_of_rows = len(data)
+        
+    def isSquare(self):
+        """
+        Checks whether or not the matrix has the same number of columns as it does rows
+        Returns a boolean
+        """
+        if self.num_of_rows == self.num_of_columns:
+            return True
+        else: 
+            return False
 
     def __add__(self, other):
         """
@@ -260,6 +270,7 @@ class Matrix:
             if(not Vector(self.entries[x]).compare_vec(Vector(other.entries[x]))):
                 return False
         return True
+
 
         
             

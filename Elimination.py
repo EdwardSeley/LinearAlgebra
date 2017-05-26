@@ -10,23 +10,29 @@ class Elimination:
         and all the entries directly below are used as multipliers. Elimination is done on each entry under the diagonal as the diagonal
         progresses to the right, until there are no more entries under each diagonal
         """
+        
         eliminationMatrices = []
+        columnNum = 0
         for rowNum in range(baseMatrix.num_of_rows):
             for multiplierIndex in range(rowNum + 1, baseMatrix.num_of_rows):
                 columnNum = rowNum
                 pivot = baseMatrix.entries[rowNum][columnNum]
+                while (pivot == 0 and columnNum < baseMatrix.num_of_columns - 1):
+                    columnNum += 1
+                    pivot = baseMatrix.entries[rowNum][columnNum] 
                 multiplier = baseMatrix.entries[multiplierIndex][columnNum]
                 eliminationRows = []
                 for eliminationRowIndex in range(0, baseMatrix.num_of_rows):
                     if (eliminationRowIndex == multiplierIndex):
                         multiplierRow = (self.identityMatrix(baseMatrix.num_of_rows).entries[eliminationRowIndex])
-                        multiplierRow[columnNum] = round(-multiplier/pivot, 5)
+                        multiplierRow[rowNum] = round(-multiplier/pivot, 5)
                         eliminationRows.append(multiplierRow)
                     else:
                         eliminationRows.append(self.identityMatrix(baseMatrix.num_of_rows).entries[eliminationRowIndex])
                 elimMatrix = Matrix(eliminationRows)
                 baseMatrix = elimMatrix.matrix_mult(baseMatrix)
                 eliminationMatrices.append(elimMatrix)
+
                 
         return eliminationMatrices
     
@@ -63,10 +69,10 @@ class Elimination:
         Returns the U matrix
         """
         eliminationMatrices = self.eliminate(baseMatrix)
-        blankMatrix = self.identityMatrix(baseMatrix.num_of_rows)
-        for x in range(len(eliminationMatrices) - 1, -1, -1):
-            blankMatrix = eliminationMatrices[x].matrix_mult(blankMatrix)
-        e_matrix = blankMatrix
+        productMatrix = self.identityMatrix(baseMatrix.num_of_rows)
+        for x in range(len(eliminationMatrices)):
+            productMatrix = eliminationMatrices[x].matrix_mult(productMatrix)
+        e_matrix = productMatrix
         return e_matrix
 
     def solutionAugment(self, baseMatrix, solution):
@@ -91,7 +97,6 @@ class Elimination:
         eliminated_matrix = self.e_matrix(baseMatrix).matrix_mult(baseMatrix) #U matrix
         c_vector = self.solutionAugment(baseMatrix, b_vector)
         solutionSize = len(c_vector.components)
-        c_vector.printVec()
         solutionList = [None] * solutionSize
         for variableRow in range(solutionSize - 1, -1, -1):
             for solutionNum in range(len(solutionList) - 1, 0, -1):
@@ -103,10 +108,6 @@ class Elimination:
                 c_vector.components[variableRow] / eliminated_matrix.entries[variableRow][variableRow] , 2)
             
         result = Vector(solutionList)
-        if self.checkSolution(baseMatrix, b_vector, result):
-            print("Matrix result was checked and proven correct")
-        else:
-            print("Matrix result was checked and proven false")
         return result
 
     def checkSolution(self, baseMatrix, solution, result):
@@ -130,10 +131,10 @@ class Elimination:
                                            self.identityMatrix(baseMatrix.num_of_columns).columnVecs[x]).components
         return Matrix(tempList).switchDimensions()
 
-base = Matrix([[2, 1, 0], [1, 2, 1], [0, 1, 2]])
-vec1 = Vector([4, 8, 9])
+baseMatrix = Matrix([[1, 1, 2, 3], [2, 2, 8, 10], [3, 3, 10, 13]])
+b_value = Vector([5, 9, 4, 2])
 eliminate = Elimination()
-eliminate.solveMatrix(base, Vector([4, 8, 9])).printVec()
+eliminate.e_matrix(baseMatrix).matrix_mult(baseMatrix).printMatrix()
 
 
 
