@@ -18,13 +18,13 @@ class Vector:
                 raise ValueError("Components must be integers or decimals. Item "
                                  + str(data[x]) + " of component number " + str(x) + " is type " + str(type(data[x])))
         self.components = data
-        self.dimension = len(data)
+        self.size = len(data)
 
     def __len__(self):
         """
         Returns the number of components in the vector.
         """
-        return self.dimension
+        return self.size
 
     def printVec(self):
         """
@@ -216,7 +216,7 @@ class Matrix:
         changed.
         """
         if self.num_of_columns != other.num_of_rows:
-            raise ValueError("Row size of 2nd Matrix must equal column size of first. Matrix 1 has a number of " + str(self.num_of_columns) + " and Matrix 2 has a row number of " + str(other.num_of_rows) )
+            raise ValueError("Row size of 2nd Matrix must equal column size of first. Matrix 1 has a column number of " + str(self.num_of_columns) + " and Matrix 2 has a row number of " + str(other.num_of_rows) )
 
         horizontal_matrix = [None] * other.num_of_columns
         for x in range(0, other.num_of_columns):
