@@ -97,7 +97,7 @@ class Vector:
         if len(self) != len(other):
             raise ValueError("Vectors must be equal lengths")
         for x in range (0, len(self)):
-            if self.components[x] != other.components[x]:
+            if int(self.components[x]) != int(other.components[x]):
                 return False
         return True
 
@@ -154,6 +154,9 @@ class Matrix:
         self.entries = data
         self.num_of_columns = len(data[0])
         self.num_of_rows = len(data)
+        self.rank = None
+        self.dimension = None
+        self.isIndependent = None
         
     def isSquare(self):
         """
@@ -164,7 +167,17 @@ class Matrix:
             return True
         else: 
             return False
-
+    
+    def transpose(self):
+        """
+        After getting a list of the matrix's columns in vector form, it converts these to list form and uses them to make a new matrix
+        Returns matrix with rows and columns switched  
+        """
+        rowList = []
+        for vector in self.columnVecs:
+            rowList.append(vector.components)
+        return Matrix(rowList)    
+                
     def __add__(self, other):
         """
         Checks that the two matrices have both the same row and column size. Then it iterates through each item and

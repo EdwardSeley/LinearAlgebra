@@ -17,6 +17,7 @@ class Elimination:
                 while (pivot == 0 and columnNum < baseMatrix.num_of_columns - 1):
                     columnNum += 1
                     pivot = baseMatrix.entries[rowNum][columnNum] 
+
                 multiplier = baseMatrix.entries[multiplierIndex][columnNum]
                 eliminationRows = []
                 for eliminationRowIndex in range(0, baseMatrix.num_of_rows):
@@ -26,9 +27,22 @@ class Elimination:
                         eliminationRows.append(multiplierRow)
                     else:
                         eliminationRows.append(Elimination.identityMatrix(baseMatrix.num_of_rows).entries[eliminationRowIndex])
+                        
                 elimMatrix = Matrix(eliminationRows)
                 baseMatrix = elimMatrix.matrix_mult(baseMatrix)
                 eliminationMatrices.append(elimMatrix)
+        
+        numOfZeroRows = 0
+        for row in baseMatrix.entries:
+            if Vector(row).compare_vec(Elimination.getZeroVector(len(row))):
+                numOfZeroRows += 1
+                
+        baseMatrix.rank = baseMatrix.dimension = baseMatrix.num_of_rows - numOfZeroRows
+        
+        if baseMatrix.rank == baseMatrix.num_of_rows:
+            baseMatrix.isIndependent = True
+        else: 
+            baseMatrix.isIndependent = False
         
         if (returnEliminationMatrices):        
             return eliminationMatrices
@@ -92,7 +106,6 @@ class Elimination:
         factorsList.append(l_matrix)
         factorsList.append(u_matrix)
         return factorsList
-        
 
     def identityMatrix(size):
         """
@@ -183,6 +196,10 @@ class Elimination:
             tempList[x] = Elimination.solveMatrix(baseMatrix, 
                                            Elimination.identityMatrix(baseMatrix.num_of_columns).columnVecs[x]).components
         return Matrix(tempList).switchDimensions()
+    
+    def getZeroVector(size):
+        return Vector([0] * size)
 
-#baseMatrix = Matrix([[1, 0, -1, 0, 4], [2, 1, 0, 0, 9], [-1, 2, 5, 1, -5], [1, -1, -3, -2, 9]])
-
+baseMatrix = Matrix([[1, 0, -1, 0, 4], [2, 1, 0, 0, 9], [-1, 2, 5, 1, -5], [1, -1, -3, -2, 9]])
+baseMatrix.printMatrix()
+baseMatrix.transpose().printMatrix()
